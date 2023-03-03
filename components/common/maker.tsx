@@ -23,7 +23,15 @@ export default function MakerComponent({ data, title }: MakerComponentProps) {
     <PageContainer title={title}>
       <ul.wrap>
         {data.map((card, i) => (
-          <li onClick={() => route.push(`/tiermaker/${card.uuid}`)} key={i}>
+          <li
+            onClick={() =>
+              route.push({
+                pathname: `/tiermaker/${card.uuid}`,
+                query: { ...card },
+              })
+            }
+            key={i}
+          >
             <Card {...card} />
           </li>
         ))}
@@ -35,7 +43,9 @@ export default function MakerComponent({ data, title }: MakerComponentProps) {
 const Card = (props: MakerType) => {
   return (
     <card.wrap>
-      <card.thumb></card.thumb>
+      <card.thumb>
+        <Image src={props.userImage || ""} width={300} height={200} alt="thumb" sizes="100%" style={{ objectFit: "cover" }} />
+      </card.thumb>
       <card.title>
         <Text type={TextType.HEAD_S} weight={600}>
           {props.title}
@@ -77,6 +87,14 @@ const card = {
     margin-bottom: 10px;
     border-radius: 8px;
     background-color: lightgray;
+    overflow: hidden;
+
+    img {
+      transition: all 0.3s ease;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   `,
   title: styled.div``,
   desc: styled.div``,
